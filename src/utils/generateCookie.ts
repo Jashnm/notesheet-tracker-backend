@@ -8,7 +8,7 @@ const generateCookie = (uuid: string, method: number): any => {
     return cookie.serialize("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: "strict",
       expires: new Date(0),
       path: "/"
     });
@@ -16,15 +16,14 @@ const generateCookie = (uuid: string, method: number): any => {
 
   token = generateToken(uuid);
 
-  const c = cookie.serialize("token", token, {
+  return cookie.serialize("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: "strict",
     maxAge: 36000,
-    path: "/"
+    path: "/",
+    domain: ".publishere.co"
   });
-
-  return c;
 };
 
 export default generateCookie;
