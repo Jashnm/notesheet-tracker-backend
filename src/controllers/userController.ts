@@ -7,7 +7,8 @@ import generateCookie from "../utils/generateCookie";
 const prisma = new PrismaClient();
 
 export const createUser = asyncHandler(async (req: Request, res: Response) => {
-  const { name, role, email } = req.body;
+  const { name, role, email, isAdmin } = req.body;
+
   let { pwd } = req.body;
   const userExists = await prisma.user.findUnique({
     where: {
@@ -28,6 +29,7 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
       name,
       role,
       email,
+      isAdmin: isAdmin,
       password: pwd
     }
   });

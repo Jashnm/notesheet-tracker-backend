@@ -23,7 +23,7 @@ model User {
   schoolId Int?
   notesheet Notesheet[]
   notesheetsIn Notesheet[] @relation("AllUsers")
-  isAdmin Boolean? @default(false) 
+  isAdmin Boolean @default(false) 
   
   @@map(name: "users")
   

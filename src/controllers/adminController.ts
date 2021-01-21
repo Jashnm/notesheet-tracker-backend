@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { request, Request, Response } from "express";
+import { NextFunction, request, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import fs from "fs";
 import { Parser } from "json2csv";
@@ -9,13 +9,11 @@ const prisma = new PrismaClient();
 
 const directory = process.cwd() + "/resources/";
 
-export const deleteCompleted60 = asyncHandler(
-  async (_: Request, res: Response) => {
+export const isUserAdmin = asyncHandler(
+  async (_req: Request, res: Response, next: NextFunction) => {
     const user = res.locals.user;
 
-    console.log(user);
-
-    const isUserAdmin = await prisma.user.findFirst({
+    const checkUser = await prisma.user.findFirst({
       where: {
         AND: [
           {
@@ -28,10 +26,15 @@ export const deleteCompleted60 = asyncHandler(
       }
     });
 
-    if (!isUserAdmin) {
+    if (!checkUser) {
       throw new Error("Permission denied");
     }
+    next();
+  }
+);
 
+export const deleteCompleted60 = asyncHandler(
+  async (_: Request, res: Response) => {
     const dateToday = new Date();
     dateToday.setDate(dateToday.getDate() - 45);
 
@@ -91,4 +94,18 @@ export const downloadFile = asyncHandler(async (_: Request, res: Response) => {
       throw new Error("Internal server error.");
     }
   });
+});
+
+export const getAllUsers = asyncHandler(async (_: Request, res: Response) => {
+  const users = await prisma.user.findMany();
+
+  res.json(users);
+});
+
+export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+  const uuid = req.params.uuid;
+
+  const deletedUser = await prisma.user.delete({ where: { uuid } });
+
+  res.json(deletedUser);
 });

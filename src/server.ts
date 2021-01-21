@@ -15,7 +15,7 @@ const app = express();
 dotenv.config();
 
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(morgan("common"));
 
 app.use(cookieParser());
 app.use(
