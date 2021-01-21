@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import argon2 from "argon2";
 import asyncHandler from "express-async-handler";
 import generateCookie from "../utils/generateCookie";
+import generateToken from "../utils/generateToken";
 
 const prisma = new PrismaClient();
 
@@ -37,7 +38,14 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
   if (user) {
     const { password, ...userNoPwd } = user;
 
-    res.set("SET-Cookie", generateCookie(user.uuid, 1));
+    res.cookie("myToken", generateToken(user.uuid), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 36000,
+      path: "/"
+    });
+    // res.set("SET-Cookie", generateCookie(user.uuid, 1));
 
     res.status(201).json({
       ...userNoPwd
@@ -108,7 +116,14 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const { password, ...noPasswordUser } = user;
   if (user && correctPassword) {
-    res.set("SET-Cookie", generateCookie(user.uuid, 1));
+    // res.set("SET-Cookie", generateCookie(user.uuid, 1));
+    res.cookie("myToken", generateToken(user.uuid), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 36000,
+      path: "/"
+    });
     res.json({
       ...noPasswordUser
     });
