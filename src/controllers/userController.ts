@@ -108,6 +108,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const { password, ...noPasswordUser } = user;
   if (user && correctPassword) {
+    console.log("User: " + user);
     res.set("SET-Cookie", generateCookie(user.uuid, 1));
 
     res.json({
