@@ -1,4 +1,4 @@
-import { Notesheet, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { request, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import fs from "fs";
@@ -59,14 +59,14 @@ export const getDatainCSV = asyncHandler(async (_: Request, res: Response) => {
     return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
   };
 
-  const allNotesheets: Notesheet[] | any = await prisma.notesheet.findMany({
+  const allNotesheets: [] | any = await prisma.notesheet.findMany({
     include: {
       startedBy: { select: { name: true } },
       currentUser: { select: { name: true } }
     }
   });
 
-  allNotesheets.map((n: Notesheet) => {
+  allNotesheets.map((n: any) => {
     n.createdAt = dateToLocal(n.createdAt);
     n.updatedAt = dateToLocal(n.updatedAt);
   });

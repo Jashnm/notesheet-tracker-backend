@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node build/server.js",
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "watch-node": "nodemon build/server.js",
+    "watch-ts": "tsc -w"
   },
   "author": "Jashn Maloo",
   "license": "ISC",
