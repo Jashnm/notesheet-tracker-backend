@@ -47,7 +47,10 @@ const User = new PrismaClient().user;
 
 const protect: any = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies.myToken;
+    console.log(req.cookies);
+
+    const token = req.cookies.token;
+    console.log(token);
 
     if (!token) throw new Error("Unauthenticated - no token");
 
