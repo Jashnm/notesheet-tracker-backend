@@ -47,24 +47,27 @@ const User = new PrismaClient().user;
 
 const protect: any = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.cookies);
+    try {
+      const token = req.cookies.token;
+      console.log("Token: " + token);
 
-    const token = req.cookies.token;
-    console.log(token);
+      if (!token) throw new Error("Unauthenticated - no token");
 
-    if (!token) throw new Error("Unauthenticated - no token");
+      const decodedUser: any = await jwt.verify(token, process.env.JWT_SECRET!);
 
-    const decodedUser: any = await jwt.verify(token, process.env.JWT_SECRET!);
+      const user = await User.findUnique({
+        where: { uuid: decodedUser.uuid }
+      });
 
-    const user = await User.findUnique({
-      where: { uuid: decodedUser.uuid }
-    });
+      if (!user) throw new Error("Unauthenticated");
 
-    if (!user) throw new Error("Unauthenticated");
+      res.locals.user = user;
 
-    res.locals.user = user;
-
-    next();
+      next();
+    } catch (err) {
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
   }
 );
 
