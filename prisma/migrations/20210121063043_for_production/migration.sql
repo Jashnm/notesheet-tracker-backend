@@ -14,6 +14,7 @@ CREATE TABLE "users" (
     "role" "UserRole" NOT NULL DEFAULT E'Lecturer',
     "deptId" INTEGER,
     "schoolId" INTEGER,
+    "isAdmin" BOOLEAN DEFAULT false,
 
     PRIMARY KEY ("id")
 );
