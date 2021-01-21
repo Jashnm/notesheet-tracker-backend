@@ -20,13 +20,15 @@ const generateCookie = (uuid: string, method: number): any => {
 
   console.log(process.env.NODE_ENV);
 
-  return cookie.serialize("token", token, {
+  const c = cookie.serialize("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: 36000,
     path: "/"
   });
+
+  return c;
 };
 
 export default generateCookie;

@@ -109,7 +109,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { password, ...noPasswordUser } = user;
   if (user && correctPassword) {
     console.log("User: " + user);
-    res.set("SET-Cookie", generateCookie(user.uuid, 1));
+    res.setHeader("SET-Cookie", generateCookie(user.uuid, 1));
 
     res.json({
       ...noPasswordUser
@@ -212,7 +212,7 @@ export const getUserCurrentNotesheets = asyncHandler(
 //Logout
 
 export const logout = (_: Request, res: Response) => {
-  res.set("Set-Cookie", generateCookie("", 0));
+  res.setHeader("Set-Cookie", generateCookie("", 0));
 
   return res.status(200).json({ success: true });
 };
