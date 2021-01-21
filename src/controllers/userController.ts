@@ -46,46 +46,8 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
     throw new Error("Invalid user data");
   }
-
-  //   } else {
-  //     deptId = +req.body.dept;
-  //     deptUuid = await prisma.dept.findUnique({
-  //       where: { id: deptId }
-  //     });
-  //     const user = await prisma.user.create({
-  //       data: {
-  //         name,
-  //         role,
-  //         dept: {
-  //           connect: {
-  //             uuid: deptUuid.uuid
-  //           }
-  //         },
-  //         email,
-  //         password
-  //       },
-  //       select: {
-  //         name: true,
-  //         role,
-  //         email,
-  //         uuid,
-  //         id,
-  //         dept,
-  //         deptId
-  //       }
-  //     });
-
-  //     if (user) {
-  //       res.status(201).json({
-  //         ...user,
-  //         token: generateToken(user.uuid)
-  //       });
-  //     } else {
-  //       res.status(400);
-  //       throw new Error("Invalid user data");
-  //     }
-  //   }
 });
+
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, pwd } = req.body;
 
@@ -102,13 +64,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const correctPassword = await argon2.verify(user.password, pwd);
 
-  // if (!correctPassword) {
-  //   throw new Error("Wrong credentials");
-  // }
-
   const { password, ...noPasswordUser } = user;
   if (user && correctPassword) {
-    console.log("User: " + user);
     res.setHeader("SET-Cookie", generateCookie(user.uuid, 1));
 
     res.json({

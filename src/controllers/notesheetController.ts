@@ -179,7 +179,6 @@ export const getUserAllNotesheets = asyncHandler(
   async (_: Request, res: Response) => {
     const { uuid } = res.locals.user;
 
-    console.log(uuid);
     const notesheets = await prisma.notesheet.findMany({
       where: { startedBy: { uuid: uuid } },
       include: {
@@ -220,8 +219,6 @@ export const deleteNotesheet = asyncHandler(
 
 export const getAllNotesheets = asyncHandler(
   async (_: Request, res: Response) => {
-    console.log("hey");
-
     const result = await prisma.notesheet.findMany();
     res.json(result);
   }
