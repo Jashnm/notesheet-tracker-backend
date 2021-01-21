@@ -25,7 +25,8 @@ app.use(
       process.env.NODE_ENV === "production"
         ? process.env.ORIGIN
         : process.env.DEV_ORIGIN,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    exposedHeaders: ["SET-Cookie"]
   })
 );
 

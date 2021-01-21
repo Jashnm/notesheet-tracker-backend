@@ -16,10 +16,6 @@ const generateCookie = (uuid: string, method: number): any => {
 
   token = generateToken(uuid);
 
-  console.log("GenerateCookie: " + token);
-
-  console.log(process.env.NODE_ENV);
-
   const c = cookie.serialize("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
