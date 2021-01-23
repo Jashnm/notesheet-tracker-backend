@@ -10,7 +10,8 @@ const generateCookie = (uuid: string, method: number): any => {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: new Date(0),
-      path: "/"
+      path: "/",
+      domain: ".publishere.co"
     });
   }
 
