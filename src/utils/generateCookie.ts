@@ -11,7 +11,7 @@ const generateCookie = (uuid: string, method: number): any => {
       sameSite: "strict",
       expires: new Date(0),
       path: "/",
-      domain: ".publishere.co"
+      domain: ".re-usable.xyz"
     });
   }
 
@@ -23,7 +23,7 @@ const generateCookie = (uuid: string, method: number): any => {
     sameSite: "strict",
     maxAge: 36000,
     path: "/",
-    domain: ".publishere.co"
+    domain: ".re-usable.xyz"
   });
 };
 
