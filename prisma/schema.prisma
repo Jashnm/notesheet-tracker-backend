@@ -11,57 +11,59 @@ generator client {
 }
 
 model User {
-  id Int @default(autoincrement()) @id
-  uuid String @default(uuid()) @unique
-  name String
-  email String @unique
-  password String 
-  role UserRole @default(Lecturer)
-  dept Dept? @relation(fields: [deptId], references:[id])
-  deptId Int?
-  school School? @relation(fields: [schoolId], references:[id])
-  schoolId Int?
-  notesheet Notesheet[]
+  id           Int         @id @default(autoincrement())
+  uuid         String      @unique @default(uuid())
+  name         String
+  email        String      @unique
+  password     String
+  role         UserRole    @default(Lecturer)
+  dept         Dept?       @relation(fields: [deptId], references: [id])
+  deptId       Int?
+  school       School?     @relation(fields: [schoolId], references: [id])
+  schoolId     Int?
+  notesheet    Notesheet[]
   notesheetsIn Notesheet[] @relation("AllUsers")
-  isAdmin Boolean @default(false) 
-  
+  isAdmin      Boolean     @default(false)
+
+
   @@map(name: "users")
-  
 }
 
 model Dept {
-  id Int @default(autoincrement()) @id
-  uuid String @default(uuid()) @unique
-  name String
-  faculty User[]
-  school School @relation(fields: [schoolId], references: [id])
+  id       Int    @id @default(autoincrement())
+  uuid     String @unique @default(uuid())
+  name     String
+  faculty  User[]
+  school   School @relation(fields: [schoolId], references: [id])
   schoolId Int
 
   @@map(name: "departments")
 }
 
 model School {
-  id Int  @default(autoincrement()) @id
-  uuid String @default(uuid()) @unique
+  id   Int    @id @default(autoincrement())
+  uuid String @unique @default(uuid())
   name String
   dean User?
+
   @@map("school")
+  Dept Dept[]
 }
 
 model Notesheet {
-  id Int @default(autoincrement()) @id
-  uuid String @default(uuid()) @unique
-  title String
-  body String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status Status
-  financial Boolean
-  currentUser User[] @relation("AllUsers")
-  startedBy User @relation(fields: [userId], references: [id])
-  userId Int
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  title       String
+  body        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      Status
+  financial   Boolean
+  currentUser User[]   @relation("AllUsers")
+  startedBy   User     @relation(fields: [userId], references: [id])
+  userId      Int
 
-@@map(name: "notesheets")
+  @@map(name: "notesheets")
 }
 
 enum UserRole {
